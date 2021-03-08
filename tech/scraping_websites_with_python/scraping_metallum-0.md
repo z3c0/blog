@@ -26,7 +26,7 @@ https://www.metal-archives.com/lists/A
 
 Right away, we can see the data we're targeting.
 
-[](scraping_metallum-0-1.png)
+[pic-1](scraping_metallum-0-1.png)
 
 There are a couple of other important details that are immediately apparent:
 
