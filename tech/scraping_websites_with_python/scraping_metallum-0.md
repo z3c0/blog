@@ -1,6 +1,6 @@
 # Scraping Websites with Python
 
-Scraping website data is a practice as old as the web itself, and remains relevant today. In earlier days of the web, extracting data from a webpage really only required that the data be in a consistent structure, such as what you see with a ```table``` element. However, in the world of session identifiers and dynamic page loading, web scraping now has a higher bar for entry. This series will walk you through addressing these challenges, and will give you some guidance on catching all the pitfalls of web-scraping before falling in them.
+Scraping website data is a practice as old as the web itself, and remains relevant today. In earlier days of the web, extracting data from a webpage really only required that the data be in a consistent structure, such as what you see with a ```table``` element. However, in the world of session identifiers and dynamic page loading, web-scraping now has a higher bar for entry. This series will walk you through addressing these challenges, and will give you some guidance on catching all the pitfalls of web-scraping before falling into them.
 
 ## Part 1: Getting to know your target (Analysis)
 
