@@ -16,7 +16,7 @@ To begin, start by seeking to understand as much as you can about the structure 
 
 1) How does the website organize the data?
 
-### Interpreting the HTML
+### Analyzing the Website
 
 To begin, select a page that you would like to scrape data from. In this case, we'll be starting [here](https://www.metal-archives.com/lists/A).
 
@@ -46,6 +46,8 @@ There are a couple of other important details that are immediately apparent:
 
 On that final point, we've identified our next few steps.
 
+***
+
 **Step 1**: Firstly, we need to find out how to grab the records from the page we're currently on.
 
 **Step 2**: After that, we will need to scrape the remaining records from the "A" list.
@@ -54,7 +56,7 @@ On that final point, we've identified our next few steps.
 
 ***
 
-#### Getting data from the current page
+### Getting Data from the Current Page
 
 The dynamic rendering that we noticed earlier indicates that we'll need to start by checking what requests our target is making after page load. You can do this by  opening your browser's developer tools (press F12) and navigating to the Network page.
 
@@ -64,7 +66,7 @@ For the first second or two, you should see an empty list.
 
 ![Empty A Bands List](https://raw.githubusercontent.com/z3c0/blog/main/tech/scraping_websites_with_python/scraping_metallum-0-2.PNG)
 
-After that, you should see a flurry of requests popping up in the Network tab. This is the page loading its content. As of writing this, loading the page with a fresh cache results in around twenty different web requests. The next step would be to identify which of those requests was for our target data.
+After that, you should see a flurry of requests popping up in the Network tab. This is the page loading its content. As of writing this, loading the page with a fresh cache results in around twenty different web requests. The next step would be to identify which of those requests was for our target dataset.
 
 ![A Bands Web Requests](https://raw.githubusercontent.com/z3c0/blog/main/tech/scraping_websites_with_python/scraping_metallum-0-3.PNG)
 
@@ -92,7 +94,7 @@ https://www.metal-archives.com/browse/ajax-letter/l/A/json/1?sEcho=1&iDisplaySta
 
 Directly visiting the URL should return a page of JSON data. JSON is extremely easy to interact with programmatically, so this is undoubtedly the best way for us to extract the data from the current page (**Step 1**). We can also see some values in the dataset that will come in handy for **Step 2** - specifically ```iTotalRecords```, which informs us of the overall size of the dataset. We will know that we've retrieved the entire dataset once we've obtained the amount of records specified by ```iTotalRecords```.
 
-We can divide this URL into four important pieces.
+Now let's return to looking at our shortened URL. We can divide this URL into four important pieces.
 
 1) The request endpoint ```/browse/ajax-letter/l/A/json/1```
 
@@ -109,9 +111,11 @@ We can divide this URL into four important pieces.
 1) The ```iDisplayLength``` parameter
 
     - As you'd expect, this parameter is meant to be paired with ```iDisplayStart```, and specifies how many records to grab after the starting point. This will also come in handy for **Step 2**
-    Currently, it's set to ```500```. If you pass the parameter ```1000```, you'll see that the query still only returns 500 records. This means that 500 records is hard limit defined in the API. We are going to have to work within that limit.
+    Currently, it's set to ```500```. If you pass the parameter ```1000```, you'll see that the query still only returns 500 records. This means that 500 records is a hard limit defined in the API. We are going to have to work within that limit.
 
-At this point, we can say that we have enough information to start getting data from the current page. However, thanks to our analysis, we have also gained an understanding of the following steps. Let's revisit the steps we defined earlier.
+At this point, we can say that we have enough information to start getting data from the current page (**Step 1**). However, thanks to our analysis, we have also gained an understanding of **Steps 2 & 3**. Let's revisit them with our new information.
+
+***
 
 **Step 1**: Grab the records from the page we're currently on.
 
@@ -121,17 +125,17 @@ We now know that this is done by sending a request to ```https://www.metal-archi
 
 We can do this by changing the values in the ```iDisplayStart``` and ```iDisplayLength``` parameters, until ```iDisplayStart``` is greater than ```iTotalRecords```.
 
-**Step 3**: Once we've done that, we need to query the remaining lists
+**Step 3**: Query the remaining lists
 
 This can be done by parameterizing the letter within the URL ```/browse/ajax-letter/l/{RIGHT HERE}/json/1```. However, we still haven't confirmed which values can be successfully passed to that position. That is our next lead for analysis.
 
 ***
 
-#### Querying the other lists
+### Querying the Remaining Data
 
-The only information left to gather before we can start coding is what values we can pass to the API endpoint to return the remaining lists. Given that our lists our organized alphabetically, we can logically reason that the remaining lists are retrieved by passing in the corresponding letter. This is easily confirmed by visiting plugging any letter and observing the results.
+The only information left to gather before we can start coding is what values we can pass to the API endpoint to return the remaining lists. Given that our lists our organized alphabetically, we can logically reason that the remaining lists are retrieved by passing in the corresponding letter. This is easily confirmed by plugging in any letter and observing the results.
 
-Requesting ```https://www.metal-archives.com/browse/ajax-letter/l/Z/json/1?sEcho=1&iDisplayStart=0&iDisplayLength=500``` returns the first 500 bands beginning with "Z", confirming our theory. But what of bands that begin with a number or symbol?
+Requesting ```https://www.metal-archives.com/browse/ajax-letter/l/Z/json/1?sEcho=1&iDisplayStart=0&iDisplayLength=500``` returns the first 500 (or less) bands beginning with "Z", confirming our theory. But what of the bands that begin with a number or symbol?
 
 The answer to our question can be found in the navigation bar we spotted on our first pass of the web page.
 
@@ -155,20 +159,24 @@ Our analysis is now complete.
 
 ### Finalizing the steps
 
-Now that we have a complete picture of what it takes to retrieve our target data, we can redefine our steps to more resemble what our code will look like.
+Now that we have a complete picture of what it takes to retrieve our target dataset, we can redefine our steps to more resemble what our code will look like.
+
+***
 
 **Step 1**: Loop over the endpoint ```/browse/ajax-letter/l/{LETTER}/json/1?sEcho=1&iDisplayStart=0&iDisplayLength=500``` where ```LETTER``` is a value from
-```[A, B, C, D, E, F, G, H, I, J, K, L, M, N, O, P, Q, R, S, T, U, V, W, X, Y, Z, NBR, and ~]```
+```[A, B, C, D, E, F, G, H, I, J, K, L, M, N, O, P, Q, R, S, T, U, V, W, X, Y, Z, NBR, ~]```
 
 **Step 2**: At each iteration of **Step 1**, increment ```iDisplayStart``` by ```iDisplayLength``` until ```iDisplayStart``` is greater than ```iTotalRecords```, grabbing records from each endpoint.
 
-You may noticed that we've now reduced our steps to only two, and those steps are in reverse order to how they appeared when we initially defined them. This is why it is important to finish your analysis before beginning to code - otherwise, you might have had to do some major restructuring to your code to account for new discoveries. 
+***
 
-Let's review some of what we learned
+We've now reduced our steps to only two, and those steps are in reverse order to how they appeared when we initially defined them. This is why it is important to finish your analysis before beginning to code - otherwise, you might have to do some major restructuring to your code to account for each new discovery.
 
-1) We can't just scrape the HTML elements that are available at page load, due to the page dynamically loading content. We will instead need to utilize the site's API to retrieve our target dataset.
+Let's review some of what we learned.
 
-2) The data is segmented by two dimensions: 1) the letter the bands begin with and 2) the number of records returned. We will need to incrementally load our data to retrieve the entire dataset
+1) We can't just scrape the HTML elements that are available at page load, due to the page dynamically loading content. We will instead need to utilize the website's API to retrieve our target dataset.
+
+2) The dataset is segmented by two dimensions: 1) the letter the bands begin with and 2) the number of records returned. We will need to incrementally load our data across both dimensions to retrieve the entire dataset.
 
 By thoroughly analyzing our target, we've greatly trimmed down the amount of time we're going to need to code a solution. We're now ready to start coding.
 ***
