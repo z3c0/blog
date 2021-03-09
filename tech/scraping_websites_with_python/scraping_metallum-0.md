@@ -1,10 +1,12 @@
 # Scraping Websites with Python
 
+Scraping website data is a practice as old as the web itself, and remains relevant today. In earlier days of the web, extracting data from a webpage really only required that the data be in a conistent structure, such as what you see with a ```table``` element. However, in the world of session identifiers and dynamic page loading, web scraping now has a higher bar for entry. This series will walk you through addressing these challenges, and will give you some guidance on catching all the pitfalls of web-scraping before falling in them.
+
 ## Part 1: Getting to know your target (Analysis)
 
-Before you begin coding, it's important you gather as much information about the target website as reasonably possible. This will prevent you from getting caught by an unforeseen pitfall later on. For the purpose of this tutorial, we are going to be analyzing the popular music data site metal-archives.com, known for it's extensive data on metal bands.
+Before you begin coding, it's important you gather as much information about the target website as reasonably possible. This will prevent you from getting caught by an unforeseen obstacle later on. For the purpose of this tutorial, we are going to be analyzing the popular music data site ```metal-archives.com```, known for it's extensive data on metal bands.
 
-If you want to skip straight to the coding, check back later for the next entry in this series.
+*If you want to skip straight to the coding, check back later for the next entry in this series.*
 
 To begin, start by seeking to understand as much as you can about the structure of the site. This will help to more clearly lay out your goals. Here's a couple of questions that you could start with:
 
@@ -15,6 +17,8 @@ To begin, start by seeking to understand as much as you can about the structure 
 1) Does the site allow anonymous access, or must you use a login?
 
 1) How does the website organize the data?
+
+***
 
 ### Analyzing the Website
 
@@ -40,7 +44,7 @@ There are a couple of other important details that are immediately apparent:
 
 1) Below the header detailing the other list options, we can see a sub-header specifying the number of pages in the currently selected list. As of writing this post, there are 12,589 entries. Only the first 500 records are visible currently.
 
-1) Depending on your internet speed, you may have noticed a slight delay in the list of bands loads. This implies that the content is being dynamically-rendered after page load.
+1) Depending on your internet speed, you may have noticed a slight delay as the list of bands loads. This indicates that the content is being dynamically rendered after page load.
 
     - If you didn't catch this, try throttling your speed from the Network tools in your browser's developer tools (press F12).
 
@@ -58,7 +62,7 @@ On that final point, we've identified our next few steps.
 
 ### Getting Data from the Current Page
 
-The dynamic rendering that we noticed earlier indicates that we'll need to start by checking what requests our target is making after page load. You can do this by  opening your browser's developer tools (press F12) and navigating to the Network page.
+The dynamic rendering that we noticed earlier means that we'll need to start by checking what requests the page is making after page load. You can do this by opening your browser's developer tools (press F12) and navigating to the Network page.
 
 Once there, set your throttling speed to DSL and refresh the page.
 
@@ -94,7 +98,15 @@ https://www.metal-archives.com/browse/ajax-letter/l/A/json/1?sEcho=1&iDisplaySta
 
 Directly visiting the URL should return a page of JSON data. JSON is extremely easy to interact with programmatically, so this is undoubtedly the best way for us to extract the data from the current page (**Step 1**). We can also see some values in the dataset that will come in handy for **Step 2** - specifically ```iTotalRecords```, which informs us of the overall size of the dataset. We will know that we've retrieved the entire dataset once we've obtained the amount of records specified by ```iTotalRecords```.
 
-Now let's return to looking at our shortened URL. We can divide this URL into four important pieces.
+There's some other details worth noting, but mostly because they inform us of what we *don't* have to do.
+
+1) The API uses a GET request with generic headers, meaning that all our parameters can be fed via a query string in the URL. This will save us from having to tailor our request headers to the API's liking.
+
+1) Even though a cookie is passed to the API when the page is loading content, we didn't need a cookie to retrieve data. This means that our request can be made anonymously - this is great news, because maintaining our session would add an additional challenge between us and our goal.
+
+***
+
+Now, let's return to looking at our shortened URL. We can divide this URL into four important pieces.
 
 1) The request endpoint ```/browse/ajax-letter/l/A/json/1```
 
