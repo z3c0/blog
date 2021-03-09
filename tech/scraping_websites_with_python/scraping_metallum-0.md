@@ -122,7 +122,7 @@ Now, let's return to looking at our shortened URL. We can divide this URL into f
 
 1) The ```iDisplayLength``` parameter
 
-    - As you'd expect, this parameter is meant to be paired with ```iDisplayStart```, and specifies how many records to grab after the starting point. This will also come in handy for **Step 2**
+    - As you'd expect, this parameter is meant to be paired with ```iDisplayStart```, and specifies how many records to grab after the starting point. This will also come in handy for **Step 2**.
     Currently, it's set to ```500```. If you pass the parameter ```1000```, you'll see that the query still only returns 500 records. This means that 500 records is a hard limit defined in the API. We are going to have to work within that limit.
 
 At this point, we can say that we have enough information to start getting data from the current page (**Step 1**). However, thanks to our analysis, we have also gained an understanding of **Steps 2 & 3**. Let's revisit them with our new information.
