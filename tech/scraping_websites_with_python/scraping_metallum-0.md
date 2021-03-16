@@ -193,4 +193,4 @@ Let's review some of what we learned.
 By thoroughly analyzing our target, we've greatly trimmed down the amount of time we're going to need to code a solution. We're now ready to start coding.
 ***
 
-Check back in a week for the next installment: *Scraping the Data (using Requests, BeautifulSoup4, and Pandas)*
+Check back in a week for the next installment: *Scraping the Data (using Requests and Pandas)*
