@@ -382,7 +382,7 @@ This can be done succinctly by opening and closing the file with the `'w'` write
     open('bands.csv', 'w').close()
 ```
 
-With that, our script is complete.
+Our script is complete.
 
 ```python
 import json
@@ -452,4 +452,4 @@ if __name__ == '__main__':
 
 ***
 
-After this excercise, you should feel more comfortable with reverse-engineering web APIs. Check back in a week for the next installment in this series: *Extacting the Data Faster (with multi-threading)*
+After this excercise, you should feel more comfortable with reverse-engineering web APIs, making web requests, and parsing JSON data. If you want to learn more about how you can speed up your script, check back in a week for the next installment in this series: *Extacting the Data Faster (with multi-threading)*
