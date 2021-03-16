@@ -150,7 +150,9 @@ def download_metal_bands():
         letter_page = requests.get(letter_endpoint, headers=headers)
 
         if letter_page.status_code != 200:
-            raise Exception(f'{letter_page.status_code}: {letter_page.text}')
+            error_text = \
+                f'{letter_page.status_code}: {letter_page.text[:500]}'
+            raise Exception(error_text)
 
         print(letter_page.text[:500])
 
@@ -216,7 +218,8 @@ To make sure everything is working as intended, let's temporarily remove the `br
         letter_page = requests.get(letter_endpoint, headers=headers)
 
         if letter_page.status_code != 200:
-            error_text = f'{letter_page.status_code}: {letter_page.text}'
+            error_text = \
+                f'{letter_page.status_code}: {letter_page.text[:500]}'
             raise Exception(error_text)
 
         json_data = json.loads(letter_page.text)
@@ -278,7 +281,8 @@ To download the data from each letter, we only need to make some minor changes. 
             letter_page = requests.get(letter_endpoint, headers=headers)
 
             if letter_page.status_code != 200:
-                error_text = f'{letter_page.status_code}: {letter_page.text}'
+                error_text = \
+                    f'{letter_page.status_code}: {letter_page.text[:500]}'
                 raise Exception(error_text)
 
             json_data = json.loads(letter_page.text)
@@ -344,7 +348,8 @@ Afterwards, you can easily write the data to a CSV with the [`to_csv()`](https:/
             letter_page = requests.get(letter_endpoint, headers=headers)
 
             if letter_page.status_code != 200:
-                error_text = f'{letter_page.status_code}: {letter_page.text}'
+                error_text = \
+                    f'{letter_page.status_code}: {letter_page.text[:500]}'
                 raise Exception(error_text)
 
             json_data = json.loads(letter_page.text)
