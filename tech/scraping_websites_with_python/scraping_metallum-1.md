@@ -1,6 +1,6 @@
 # Scraping Websites with Python
 
-In [my last post](https://github.com/z3c0/blog/blob/main/tech/scraping_websites_with_python/scraping_metallum-0.md), we covered how to analyze a website as a target for web-scraping (in this case, metal-archives.com). In this post, we're going to use the requirements we created to code a solution.
+In [my last post](https://github.com/z3c0/blog/blob/main/tech/scraping_websites_with_python/scraping_metallum-0.md), we covered how to analyze a website as a target for web-scraping (in this case, [metal-archives.com](https://metal-archives.com)). In this post, we're going to use the requirements we created to code a solution.
 
 ## Part 2: Extacting the Data (using Requests and Pandas)
 
