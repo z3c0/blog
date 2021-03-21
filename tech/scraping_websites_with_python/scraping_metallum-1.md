@@ -103,7 +103,7 @@ Believe it or not, we've already finished implementing **Step 1**. Let's move on
 
 ### **Step 2a**: Making HTTP Requests
 
-Of the two steps **Step 2**. Before beginning, let's review our criteria:
+Of the two steps **Step 2** is the more challenging. Before beginning, let's review our criteria:
 
 At each iteration of **Step 1**, increment `iDisplayStart` by `iDisplayLength` until `iDisplayStart` is greater than `iTotalRecords`, grabbing records from each endpoint. To make testing our code easier, lets only focus on the first endpoint. We can do this by adding a `break` into our loop, instructing it to stop after the first run.
 
