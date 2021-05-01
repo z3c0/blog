@@ -1,12 +1,10 @@
 import os
-import sys
 import json
 import time
 import requests
-import pandas as pd
-
-import threading as thr
 import queue as q
+import pandas as pd
+import threading as thr
 
 
 # our constants
@@ -53,6 +51,7 @@ class CSV:
             df = pd.DataFrame(data, columns=self._headers)
             df.to_csv(self._path, mode='a', index=False)
 
+
 class ErrorLog:
     def __init__(self, path):
         open(path, 'w').close()
@@ -80,14 +79,31 @@ def _create_metallum_api_endpoint(letter, offset, page_size):
     return f'https://www.metal-archives.com/{endpoint}?{query_string}'
 
 
-def _download_bands_by_letter(letter):
+def _get_band_count_per_letter(letter, attempt=0):
+    """return the number of records per a given letter"""
+
+    letter_endpoint = _create_metallum_api_endpoint(letter, 0, 1)
+    letter_page = requests.get(letter_endpoint, headers=REQUEST_HEADERS)
+
+    try:
+        json_page = json.loads(letter_page.text)
+        total_records = json_page['iTotalRecords']
+
+    except json.decoder.JSONDecodeError:
+        if attempt == 2:
+            return -1  # give up
+
+        time.sleep(10)
+        total_records = _get_band_count_per_letter(letter, attempt + 1)
+
+    return total_records
+
+
+def _download_bands_by_letter(letter, total_records):
     """download every band for a given letter"""
     offset = 0
-    total_records = 1
     band_records = []
-    errors = []
-
-    # log.message(f'downloading letter {letter}')
+    parse_errors = []
 
     try:
         while offset <= total_records:
@@ -101,26 +117,17 @@ def _download_bands_by_letter(letter):
                 continue
 
             elif letter_page.status_code not in (200, 403):
-                error_text = \
-                    f'{letter_page.status_code}: {letter_page.text[:500]}'
-                raise Exception(error_text)
+                error = (f'{letter}:{offset} {letter_page.status_code}'
+                         f' error encountered')
+                log.message(error)
 
             try:
                 json_data = json.loads(letter_page.text)
                 band_records += json_data['aaData']
 
             except json.decoder.JSONDecodeError:
-                errors.append({'response_code': letter_page.status_code,
-                               'reponse_text': letter_page.text})
-                json_data is None
-
-            if offset == 0:
-                if json_data is not None:
-                    total_records = json_data['iTotalRecords']
-                else:
-                    # set total_records to just beyond the next offset to keep
-                    # the process moving to the next page in the event of an error
-                    total_records = min(10000, offset + PAGE_SIZE + 1)
+                parse_errors.append({'response_code': letter_page.status_code,
+                                     'reponse_text': letter_page.text})
 
             offset += PAGE_SIZE
 
@@ -129,7 +136,7 @@ def _download_bands_by_letter(letter):
 
             break
 
-        error_log.write(errors)
+        error_log.write(parse_errors)
 
     except Exception as err:
         log.message(err)
@@ -138,34 +145,36 @@ def _download_bands_by_letter(letter):
     csv.write(band_records)
 
 
-def download_metal_bands(verbose=False):
+def download_metal_bands(sort_letters=True, verbose=False):
     """Get every band from Encyclopaedia Metallum using the website API"""
 
     if not verbose:
         log.disable()
 
+    if sort_letters:
+        log.message('retrieving record counts')
+        alphabet = [(_get_band_count_per_letter(ltr), ltr) for ltr in ALPHABET]
+    else:
+        alphabet = list(enumerate(ALPHABET))
+
     def _download_bands_concurrently():
-        thread = thr.current_thread().name
-        # log.message(f'entering {thread}')
         keep_threading = True
         while keep_threading:
-            queued_letter = priority_queue.get()
+            total_records, queued_letter = priority_queue.get()
 
-            if queued_letter != -1:
-                _download_bands_by_letter(queued_letter)
+            if queued_letter is not None:
+                _download_bands_by_letter(queued_letter, total_records)
             else:
                 keep_threading = False
-                # log.message(f'closing {thread}')
 
             priority_queue.task_done()
 
-    priority_queue = q.PriorityQueue(AVAILABLE_CPUS * 2)
+    priority_queue = q.PriorityQueue(AVAILABLE_CPUS * 3)
     threads = list()
 
-    for n in range(AVAILABLE_CPUS):
+    for _ in range(AVAILABLE_CPUS):
         thread_kwargs = {'daemon': True,
-                         'target': _download_bands_concurrently,
-                         'name': f'thr_{n}'}
+                         'target': _download_bands_concurrently}
 
         thread = thr.Thread(**thread_kwargs)
         thread.start()
@@ -175,18 +184,18 @@ def download_metal_bands(verbose=False):
     open(OUTPUT_FILE, 'w').close()
 
     try:
-        for letter in ALPHABET:
+        for letter in alphabet:
             priority_queue.put(letter)
 
         priority_queue.join()
     except KeyboardInterrupt:
         pass
     except Exception as err:
-        log.message(err)
+        log.message(err.text)
 
     # send close signal to threads
     for _ in threads:
-        priority_queue.put(-1)
+        priority_queue.put((-1, None))
     priority_queue.join()
 
 

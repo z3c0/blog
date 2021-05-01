@@ -1,6 +1,5 @@
 import time
 import json
-from pandas.core.algorithms import mode
 import requests
 import pandas as pd
 
@@ -63,7 +62,7 @@ def download_metal_bands():
                     total_records = json_data['iTotalRecords']
                 else:
                     # set total_records to just beyond the next offset to keep
-                    # the process moving to the next page in the event of an error
+                    # the process moving to the next page after an error
                     total_records = min(10000, offset + page_size + 1)
 
             offset += page_size

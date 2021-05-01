@@ -14,7 +14,7 @@ By default, Python is a single-threaded language, meaning that one can't *truly*
 
 Whether or not threading is a good solution for you comes down to the problem that you're trying to solve. The problem we're solving - downloading a set of lists of varying lengths - just so happens to be a problem that is better solved with threading.
 
-Let's take a look at the first
+Here's a rough count of the number of records for letter A through F:
 
 | letter    | records
 |:-         |:-
