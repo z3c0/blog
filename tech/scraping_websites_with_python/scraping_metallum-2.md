@@ -1,6 +1,6 @@
 # Scraping Websites with Python
 
-In the [last entry of this series](https://github.com/z3c0/blog/blob/main/tech/scraping_websites_with_python/scraping_metallum-1.md), we covered the basics of extracting data from a web page by using the website's API. In this installment, we're going to be exanding on the scripted used last time to complete the same task more quickly.
+In the [last entry of this series](https://github.com/z3c0/blog/blob/main/tech/scraping_websites_with_python/scraping_metallum-1.md), we covered the basics of extracting data from a web page by using the website's API. In this installment, we're going to be exanding on the script we used last time to complete the same task more efficiently.
 
 ## Part 3: Networked Multithreading (using `thread` and `queue`)
 

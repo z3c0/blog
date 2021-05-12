@@ -38,7 +38,9 @@ There are a couple of other important details that are immediately apparent:
 
 1) The URL appears to denote which bands we are looking at.
 
-    metal-archives.com/lists/**A**
+``` txt
+metal-archives.com/lists/**A**
+```
 
 1) There is a navigation bar above the page's data specifying the other options that can be fed to the same position as the "A" in the URL.
 
@@ -46,7 +48,9 @@ There are a couple of other important details that are immediately apparent:
 
 1) Depending on your internet speed, you may have noticed a slight delay as the list of bands loads. This indicates that the content is being dynamically rendered after page load.
 
-    - If you didn't catch this, try throttling your speed from the Network tools in your browser's developer tools (press F12).
+``` txt
+If you didn't catch this, try throttling your speed from the Network tools in your browser's developer tools (press F12).
+```
 
 On that final point, we've identified our next few steps.
 
@@ -110,20 +114,21 @@ Now, let's return to looking at our shortened URL. We can divide this URL into f
 
 1) The request endpoint ```/browse/ajax-letter/l/A/json/1```
 
-    - Similar to before, we can see that the URL denotes that we're looking at the "A" list. This will come in handy later, when it's time to start getting data from the other lists (**Step 3**).
+Similar to before, we can see that the URL denotes that we're looking at the "A" list. This will come in handy later, when it's time to start getting data from the other lists (**Step 3**).
 
 1) The ```sEcho``` parameter
 
-    - This parameter is simple - passing a ```1``` to ```sEcho``` in the request results in an ```sEcho``` of ```1``` in the response. Passing a ```2``` results in a ```2```, and so on. This technique exists so that responses can be easily matched back to their corresponding request, in the event of many requests being made asynchronously. This could come in handy later.
+This parameter is simple - passing a ```1``` to ```sEcho``` in the request results in an ```sEcho``` of ```1``` in the response. Passing a ```2``` results in a ```2```, and so on. This technique exists so that responses can be easily matched back to their corresponding request, in the event of many requests being made asynchronously. This could come in handy later.
 
 1) The ```iDisplayStart``` parameter
 
-    - This parameter is the offset of our dataset. When passing ```n``` value to this parameter, it instructs the API that we would like to fetch a subset of records beginning at the ```nth``` position of the overall dataset. This is going to be paramount in fetching all ~12,500 records (**Step 2**)
+This parameter is the offset of our dataset. When passing ```n``` value to this parameter, it instructs the API that we would like to fetch a subset of records beginning at the ```nth``` position of the overall dataset. This is going to be paramount in fetching all ~12,500 records (**Step 2**)
 
 1) The ```iDisplayLength``` parameter
 
-    - As you'd expect, this parameter is meant to be paired with ```iDisplayStart```, and specifies how many records to grab after the starting point. This will also come in handy for **Step 2**.
-    Currently, it's set to ```500```. If you pass the parameter ```1000```, you'll see that the query still only returns 500 records. This means that 500 records is a hard limit defined in the API. We are going to have to work within that limit.
+As you'd expect, this parameter is meant to be paired with ```iDisplayStart```, and specifies how many records to grab after the starting point. This will also come in handy for **Step 2**.
+
+Currently, it's set to ```500```. If you pass the parameter ```1000```, you'll see that the query still only returns 500 records. This means that 500 records is a hard limit defined in the API. We are going to have to work within that limit.
 
 At this point, we can say that we have enough information to start getting data from the current page (**Step 1**). However, thanks to our analysis, we have also gained an understanding of **Steps 2 & 3**. Let's revisit them with our new information.
 
