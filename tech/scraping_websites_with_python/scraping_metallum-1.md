@@ -229,7 +229,7 @@ To make sure everything is working as intended, let's temporarily remove the `br
 
 ```
 
-We now have an idea of how much data exists for each letter.
+We now have an approximation of how much data exists for each letter. We shouldn't assume our as precise, because new bands could be added while our script is running.
 
 ```cmd
 A: 12611
