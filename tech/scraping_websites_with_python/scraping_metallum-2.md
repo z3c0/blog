@@ -1,6 +1,6 @@
 # Scraping Websites with Python
 
-In the [last entry of this series](https://github.com/z3c0/blog/blob/main/tech/scraping_websites_with_python/scraping_metallum-1.md), we covered the basics of extracting data from a web page by using the website's API. In this installment, we're going to be exanding on the script we used last time to complete the same task more efficiently.
+In the [last entry of this series](scraping_metallum-1.md), we covered the basics of extracting data from a web page by using the website's API. In this installment, we're going to be exanding on the script we used last time to complete the same task more efficiently.
 
 ## Part 3: Networked Multithreading (using `thread` and `queue`)
 
@@ -37,7 +37,7 @@ Without threading, you would have to wait for each letter to complete before mov
 
 ### Our script
 
-Our complete script can be viewed [here](https://github.com/z3c0/blog/blob/main/tech/scraping_websites_with_python/scraping_metallum-2.py), which we will now walk through bit-by-bit.
+Our complete script can be viewed [here](scraping_metallum-2.py), which we will now walk through bit-by-bit.
 
 #### Imports
 
@@ -172,7 +172,7 @@ class Output:
 
 Next, we'll need two functions to help us perform our task. The first one is `_create_metallum_api_endpoint`, which takes a letter of the alphabet, a position in the letter's associated dataset (`offset`), and the number of records we want returned from our request (`page_size`).
 
-The second function, `_download_bands_by_letter`, utilizes the first function to retrieve every record for a given letter. To understand how these functions work, you can review the [prior post on this topic](https://github.com/z3c0/blog/blob/main/tech/scraping_websites_with_python/scraping_metallum-1.md).
+The second function, `_download_bands_by_letter`, utilizes the first function to retrieve every record for a given letter. To understand how these functions work, you can review the [prior post on this topic](scraping_metallum-1.md).
 
 ``` python
 

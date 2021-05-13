@@ -12,11 +12,11 @@ To begin, start by seeking to understand as much as you can about the structure 
 
 1) What data am I trying to gather?
 
-1) Is this site the primary source for that data? If not, do they specify their source? Repeat this line of questioning until you've discovered the "truest" source of the data (on the web, at least.)
+2) Is this site the primary source for that data? If not, do they specify their source? Repeat this line of questioning until you've discovered the "truest" source of the data (on the web, at least.)
 
-1) Does the site allow anonymous access, or must you use a login?
+3) Does the site allow anonymous access, or must you use a login?
 
-1) How does the website organize the data?
+4) How does the website organize the data?
 
 ***
 
@@ -36,21 +36,18 @@ There are a couple of other important details that are immediately apparent:
 
 1) The header "Browse Bands - Alphabetically - A" should clue us in that we are only looking at a subset of the dataset - the bands beginning with "A", in particular.
 
-1) The URL appears to denote which bands we are looking at.
+2) The URL appears to denote which bands we are looking at.
 
 ``` txt
 metal-archives.com/lists/**A**
 ```
 
-1) There is a navigation bar above the page's data specifying the other options that can be fed to the same position as the "A" in the URL.
+3) There is a navigation bar above the page's data specifying the other options that can be fed to the same position as the "A" in the URL.
 
-1) Below the header detailing the other list options, we can see a sub-header specifying the number of pages in the currently selected list. As of writing this post, there are 12,589 entries. Only the first 500 records are visible currently.
+4) Below the header detailing the other list options, we can see a sub-header specifying the number of pages in the currently selected list. As of writing this post, there are 12,589 entries. Only the first 500 records are visible currently.
 
-1) Depending on your internet speed, you may have noticed a slight delay as the list of bands loads. This indicates that the content is being dynamically rendered after page load.
-
-``` txt
+5) Depending on your internet speed, you may have noticed a slight delay as the list of bands loads. This indicates that the content is being dynamically rendered after page load.
 If you didn't catch this, try throttling your speed from the Network tools in your browser's developer tools (press F12).
-```
 
 On that final point, we've identified our next few steps.
 
@@ -106,7 +103,7 @@ There's some other details worth noting, but mostly because they inform us of wh
 
 1) The API uses a GET request with generic headers, meaning that all our parameters can be fed via a query string in the URL. This will save us from having to tailor our request headers to the API's liking.
 
-1) Even though a cookie is passed to the API when the page is loading content, we didn't need a cookie to retrieve data. This means that our request can be made anonymously - this is great news, because maintaining our session would add an additional challenge between us and our goal.
+2) Even though a cookie is passed to the API when the page is loading content, we didn't need a cookie to retrieve data. This means that our request can be made anonymously - this is great news, because maintaining our session would add an additional challenge between us and our goal.
 
 ***
 
@@ -116,15 +113,15 @@ Now, let's return to looking at our shortened URL. We can divide this URL into f
 
 Similar to before, we can see that the URL denotes that we're looking at the "A" list. This will come in handy later, when it's time to start getting data from the other lists (**Step 3**).
 
-1) The ```sEcho``` parameter
+2) The ```sEcho``` parameter
 
 This parameter is simple - passing a ```1``` to ```sEcho``` in the request results in an ```sEcho``` of ```1``` in the response. Passing a ```2``` results in a ```2```, and so on. This technique exists so that responses can be easily matched back to their corresponding request, in the event of many requests being made asynchronously. This could come in handy later.
 
-1) The ```iDisplayStart``` parameter
+3) The ```iDisplayStart``` parameter
 
 This parameter is the offset of our dataset. When passing ```n``` value to this parameter, it instructs the API that we would like to fetch a subset of records beginning at the ```nth``` position of the overall dataset. This is going to be paramount in fetching all ~12,500 records (**Step 2**)
 
-1) The ```iDisplayLength``` parameter
+4) The ```iDisplayLength``` parameter
 
 As you'd expect, this parameter is meant to be paired with ```iDisplayStart```, and specifies how many records to grab after the starting point. This will also come in handy for **Step 2**.
 
@@ -198,4 +195,4 @@ Let's review some of what we learned.
 By thoroughly analyzing our target, we've greatly trimmed down the amount of time we're going to need to code a solution. We're now ready to start coding.
 ***
 
-Check back in a week for the next installment: [*Scraping the Data (using Requests and Pandas)*](https://github.com/z3c0/blog/blob/main/tech/scraping_websites_with_python/scraping_metallum-1.md)
+Check back in a week for the next installment: [*Scraping the Data (using Requests and Pandas)*](scraping_metallum-1.md)

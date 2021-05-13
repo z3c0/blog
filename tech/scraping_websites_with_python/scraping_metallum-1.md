@@ -1,6 +1,6 @@
 # Scraping Websites with Python
 
-In [my last post](https://github.com/z3c0/blog/blob/main/tech/scraping_websites_with_python/scraping_metallum-0.md), we covered how to analyze a website as a target for web-scraping (in this case, [metal-archives.com](https://metal-archives.com)). In this post, we're going to use the requirements we created to code a solution.
+In [my last post](scraping_metallum-0.md), we covered how to analyze a website as a target for web-scraping (in this case, [metal-archives.com](https://metal-archives.com)). In this post, we're going to use the requirements we created to code a solution.
 
 ## Part 2: Extacting the Data (using Requests and Pandas)
 
@@ -324,11 +324,11 @@ At the bottom of your `ALPHABET` loop, load `band_records` into a [`DataFrame`](
 
 1) band
 
-1) country
+2) country
 
-1) genre
+3) genre
 
-1) status
+4) status
 
 Afterwards, you can easily write the data to a CSV with the [`to_csv()`](https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas-dataframe) method. Be sure to set the write mode to `'a'` for "append". After you've tested your changes, go ahead remove the `break` statement at the end of the `ALPHABET` loop.
 
