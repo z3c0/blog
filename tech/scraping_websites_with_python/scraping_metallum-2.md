@@ -453,3 +453,4 @@ When your script has completed, you should see a sequential logging of when each
 [29]:   sending close signal to threads
 ```
 
+Always keep threading in mind when taking on a time-consuming problem. Networked multithreading can be a challenge to implement, but is an indespensible skill in the world of data-gathering.
