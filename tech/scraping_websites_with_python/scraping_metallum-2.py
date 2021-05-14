@@ -158,18 +158,7 @@ def _download_bands_by_letter(letter):
     Output.error.write(parse_errors)
 
 
-def download_metal_bands(verbose=False):
-    """Get every band from Encyclopaedia Metallum using the website API"""
-
-    if not verbose:
-        Output.log.disable()
-    else:
-        Output.log.message('beginning download')
-
-    alphabet = [(-i, l) for i, l in enumerate(Constants.ALPHABET)]
-    thread_count = int(len(alphabet) / 3)
-    priority_queue = q.PriorityQueue(int(len(alphabet) / 2))
-
+def _create_thread_function(priority_queue):
     def _download_bands_concurrently():
         keep_threading = True
         while keep_threading:
@@ -186,9 +175,24 @@ def download_metal_bands(verbose=False):
             finally:
                 priority_queue.task_done()
 
+    return _download_bands_concurrently
+
+
+def download_metal_bands(verbose=False):
+    """Get every band from Encyclopaedia Metallum using the website API"""
+
+    if not verbose:
+        Output.log.disable()
+    else:
+        Output.log.message('beginning download')
+
+    alphabet = [(-i, l) for i, l in enumerate(Constants.ALPHABET)]
+    thread_count = int(len(alphabet) / 3)
+    priority_queue = q.PriorityQueue(int(len(alphabet) / 2))
+
     for _ in range(thread_count):
         thread_kwargs = {'daemon': True,
-                         'target': _download_bands_concurrently}
+                         'target': _create_thread_function(priority_queue)}
 
         thread = thr.Thread(**thread_kwargs)
         thread.start()

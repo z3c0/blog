@@ -253,27 +253,10 @@ def _download_bands_by_letter(letter):
 
 ```
 
-#### Threading
-
-Now that we've established our utilities, we can move on to the primary function of our script.
+The final utility function left to cover is `_create_thread_function`. This will be used to seed a function with our queue, which will be talked about in greater detail later. The important detail to note here is the loop - the thread is designed to keep looping until a condition is satisified. Here, the condition is a `0` being returned from `priority_queue.get()`.
 
 ``` python
-
-def download_metal_bands(verbose=False):
-    """Get every band from Encyclopaedia Metallum using the website API"""
-
-    if not verbose:
-        Output.log.disable()
-    else:
-        Output.log.message('beginning download')
-
-    alphabet = [(-i, l) for i, l in enumerate(Constants.ALPHABET)]
-    queue_size = int(len(alphabet) / 2)
-    thread_count = int(len(alphabet) / 3)
-
-    priority_queue = q.PriorityQueue(queue_size)
-    threads = list()
-
+def _create_thread_function(priority_queue):
     def _download_bands_concurrently():
         keep_threading = True
         while keep_threading:
@@ -290,13 +273,34 @@ def download_metal_bands(verbose=False):
             finally:
                 priority_queue.task_done()
 
+    return _download_bands_concurrently
+```
+
+#### Threading
+
+Now that we've established our utilities, we can move on to the primary function of our script.
+
+``` python
+
+
+def download_metal_bands(verbose=False):
+    """Get every band from Encyclopaedia Metallum using the website API"""
+
+    if not verbose:
+        Output.log.disable()
+    else:
+        Output.log.message('beginning download')
+
+    alphabet = [(-i, l) for i, l in enumerate(Constants.ALPHABET)]
+    thread_count = int(len(alphabet) / 3)
+    priority_queue = q.PriorityQueue(int(len(alphabet) / 2))
+
     for _ in range(thread_count):
         thread_kwargs = {'daemon': True,
-                         'target': _download_bands_concurrently}
+                         'target': _create_thread_function(priority_queue)}
 
         thread = thr.Thread(**thread_kwargs)
         thread.start()
-        threads.append(thread)
 
     try:
         for letter in alphabet:
@@ -309,7 +313,7 @@ def download_metal_bands(verbose=False):
         Output.log.message(err.text)
     finally:
         Output.log.message('sending close signal to threads')
-        for _ in threads:
+        for _ in range(thread_count):
             priority_queue.put((0, str()))
 
         # empty the queue
@@ -414,3 +418,38 @@ Calling the `join()` method on our `PriorityQueue` will tell our program to wait
 After every item has been processed, we can clear out our threads by sending the exit signal we covered earlier. In this case, we're just sending a `tuple` with a priority of `0` coupled with an empty string.
 
 The final step to run is emptying our queue. If everything runs smoothly, this step won't be necessary. However, in the event of an error, you'll need some way to close out your threads, or else your program will stall as your threads continue to run.
+
+When your script has completed, you should see a sequential logging of when each letter's dataset completed, along with the number of records downloaded.
+
+``` txt
+[1]:    beginning download
+[2]:    J complete (955 records)
+[3]:    K complete (3622 records)
+[4]:    L complete (4487 records)
+[5]:    X complete (432 records)
+[6]:    G complete (4702 records)
+[7]:    F complete (5270 records)
+[8]:    W complete (4114 records)
+[9]:    N complete (5912 records)
+[10]:   I complete (5559 records)
+[11]:   Y complete (381 records)
+[12]:   H complete (6076 records)
+[13]:   Z complete (849 records)
+[14]:   NBR complete (432 records)
+[15]:   ~ complete (2040 records)
+[16]:   M complete (10197 records)
+[17]:   U complete (1958 records)
+[18]:   Q complete (246 records)
+[19]:   V complete (4188 records)
+[20]:   O complete (3651 records)
+[21]:   R complete (5015 records)
+[22]:   T complete (6617 records)
+[23]:   P complete (5982 records)
+[24]:   E complete (6763 records)
+[25]:   C complete (8951 records)
+[26]:   B complete (8746 records)
+[27]:   S complete (15890 records)
+[28]:   D complete (12437 records)
+[29]:   sending close signal to threads
+```
+
