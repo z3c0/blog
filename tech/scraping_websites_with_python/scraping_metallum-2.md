@@ -348,10 +348,10 @@ Firstly, we need to create some important variables.
 
 ```
 
-Next, we need to create a function for our threads. This function will act as the primary code body for each thread. By declaring the function within our `download_metal_bands` function, we're ensuring the availability of the variables within our current scope - our queue, in particular.
+Now its time to review the threading function we looked at earlier.
 
 ``` python
-
+def _create_thread_function(priority_queue):
     def _download_bands_concurrently():
         keep_threading = True
         while keep_threading:
@@ -368,6 +368,7 @@ Next, we need to create a function for our threads. This function will act as th
             finally:
                 priority_queue.task_done()
 
+    return _download_bands_concurrently
 ```
 
 At the beginning of the thread, we retrieve the next available value from the queue by calling the `get()` method on our `PriorityQueue` object. Once we've finished processing the value with our `_download_bands_by_letter()` function, we can signal our completion with the `task_done()` method. This will come in handy later.
@@ -381,7 +382,7 @@ Once we've created our threading function, we can instantiate our threads.
 
     for _ in range(thread_count):
         thread_kwargs = {'daemon': True,
-                         'target': _download_bands_concurrently}
+                         'target': _create_threading_function(priority_queue)}
 
         thread = thr.Thread(**thread_kwargs)
         thread.start()
