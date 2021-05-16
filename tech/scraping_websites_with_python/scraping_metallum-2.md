@@ -6,7 +6,7 @@ In the [last entry of this series](scraping_metallum-1.md), we covered the basic
 
 ### `thread`/`queue` vs `multiprocessing`
 
-In this excercise, we're going to be utilizing the standard libraries `thread` and `queue` - however, there are times when the `multiprocessing` library is a far better choice. [Here's a good blog post on the subject](https://timber.io/blog/multiprocessing-vs-multithreading-in-python-what-you-need-to-know/) to help you understand the very large distinction between the two seemingly-similar approaches.
+In this exercise, we're going to be utilizing the standard libraries `thread` and `queue` - however, there are times when the `multiprocessing` library is a far better choice. [Here's a good blog post on the subject](https://timber.io/blog/multiprocessing-vs-multithreading-in-python-what-you-need-to-know/) to help you understand the very large distinction between the two seemingly-similar approaches.
 
 ### Why multithread at all?
 
@@ -178,7 +178,7 @@ The second function, `_download_bands_by_letter`, utilizes the first function to
 
 def _create_metallum_api_endpoint(letter, offset, page_size):
     """Returns an API endpoint for retrieving a segment of bands
-    beginnging with the given letter"""
+    beginning with the given letter"""
 
     endpoint = f'browse/ajax-letter/l/{letter}/json'
     query_string = f'sEcho=1&iDisplayStart={offset}&iDisplayLength={page_size}'
@@ -237,7 +237,7 @@ def _download_bands_by_letter(letter):
                 parse_errors.append({'letter': letter,
                                      'endpoint': letter_endpoint,
                                      'response_code': letter_page.status_code,
-                                     'reponse_text': scrubbed_text})
+                                     'response_text': scrubbed_text})
 
             page_attempts += 1
             continue
@@ -253,7 +253,7 @@ def _download_bands_by_letter(letter):
 
 ```
 
-The final utility function left to cover is `_create_thread_function`. This will be used to seed a function with our queue, which will be talked about in greater detail later. The important detail to note here is the loop - the thread is designed to keep looping until a condition is satisified. Here, the condition is a `0` being returned from `priority_queue.get()`.
+The final utility function left to cover is `_create_thread_function`. This will be used to seed a function with our queue, which will be talked about in greater detail later. The important detail to note here is the loop - the thread is designed to keep looping until a condition is satisfied. Here, the condition is a `0` being returned from `priority_queue.get()`.
 
 ``` python
 def _create_thread_function(priority_queue):
@@ -454,4 +454,4 @@ When your script has completed, you should see a sequential logging of when each
 [29]:   sending close signal to threads
 ```
 
-Always keep threading in mind when taking on a time-consuming problem. Networked multithreading can be a challenge to implement, but is an indespensible skill in the world of data-gathering.
+Always keep threading in mind when taking on a time-consuming problem. Networked multithreading can be a challenge to implement, but is an indispensible skill in the world of data-gathering.

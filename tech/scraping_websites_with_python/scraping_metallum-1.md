@@ -2,7 +2,7 @@
 
 In [my last post](scraping_metallum-0.md), we covered how to analyze a website as a target for web-scraping (in this case, [metal-archives.com](https://metal-archives.com)). In this post, we're going to use the requirements we created to code a solution.
 
-## Part 2: Extacting the Data (using Requests and Pandas)
+## Part 2: Extracting the Data (using Requests and Pandas)
 
 ### The Requirements
 
@@ -64,7 +64,7 @@ ALPHABET = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N'
 
 def _create_metallum_api_endpoint(letter, offset, page_size):
     """Returns an API endpoint for retrieving a segment of bands
-    beginnging with the given letter"""
+    beginning with the given letter"""
 
     endpoint = f'browse/ajax-letter/l/{letter}/json'
     query_string = f'sEcho=1&iDisplayStart={offset}&iDisplayLength={page_size}'
@@ -264,7 +264,7 @@ NBR: 423
 
 ## **Step 2c**: Retrieving the Data
 
-To download the data from each letter, we only need to make some minor changes. Within our `for` loop, we're going to add an additional `while` loop that we will use to increment the `iDisplayStart` parameter of our endpoint. More specically, we'll be mimicking the logic of `do..while` by using `while True` and a conditional at the end of the `while` loop's body.
+To download the data from each letter, we only need to make some minor changes. Within our `for` loop, we're going to add an additional `while` loop that we will use to increment the `iDisplayStart` parameter of our endpoint. More specifically, we'll be mimicking the logic of `do..while` by using `while True` and a conditional at the end of the `while` loop's body.
 
 ```python
     headers = {'User-Agent': 'python-3.9'}
@@ -396,7 +396,7 @@ ALPHABET = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M',
 
 def _create_metallum_api_endpoint(letter, offset, page_size):
     """Returns an API endpoint for retrieving a segment of bands
-    beginnging with the given letter"""
+    beginning with the given letter"""
 
     endpoint = f'browse/ajax-letter/l/{letter}/json'
     query_string = f'sEcho=1&iDisplayStart={offset}&iDisplayLength={page_size}'
@@ -452,4 +452,4 @@ if __name__ == '__main__':
 
 ***
 
-After this excercise, you should feel more comfortable with reverse-engineering web APIs, making web requests, and parsing JSON data. If you want to learn more about how you can speed up your script, check back in a week for the next installment in this series: *Extacting the Data Faster (with multi-threading)*
+After this exercise, you should feel more comfortable with reverse-engineering web APIs, making web requests, and parsing JSON data. If you want to learn more about how you can speed up your script, check back in a week for the next installment in this series: *Extracting the Data Faster (with multi-threading)*
