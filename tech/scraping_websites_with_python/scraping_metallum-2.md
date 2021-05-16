@@ -37,7 +37,7 @@ Without threading, you would have to wait for each letter to complete before mov
 
 ### Our script
 
-Our complete script can be viewed [here](scraping_metallum-2.py), which we will now walk through bit-by-bit.
+Our complete script can be viewed [here](https://raw.githubusercontent.com/z3c0/blog/main/tech/scraping_websites_with_python/scraping_metallum-2.py?token=ACLF5XUCPYRMPR7BPQFW52TAUE3IE), which we will now walk through bit-by-bit.
 
 #### Imports
 
