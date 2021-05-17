@@ -84,7 +84,7 @@ class Output:
 
 def _create_metallum_api_endpoint(letter, offset, page_size):
     """Returns an API endpoint for retrieving a segment of bands
-    beginnging with the given letter"""
+    beginning with the given letter"""
 
     endpoint = f'browse/ajax-letter/l/{letter}/json'
     query_string = f'sEcho=1&iDisplayStart={offset}&iDisplayLength={page_size}'
@@ -143,7 +143,7 @@ def _download_bands_by_letter(letter):
                 parse_errors.append({'letter': letter,
                                      'endpoint': letter_endpoint,
                                      'response_code': letter_page.status_code,
-                                     'reponse_text': scrubbed_text})
+                                     'response_text': scrubbed_text})
 
             page_attempts += 1
             continue
