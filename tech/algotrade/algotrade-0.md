@@ -70,7 +70,7 @@ Let's add the CSV's location to a constant at the top of our script.
 
 ``` python
 EOD_API_KEY = config['eodhistoricaldata']['api_key']
-WATCHLIST_PATH = 'tech/scraping_websites_with_python/algotrade-0.csv'
+WATCHLIST_PATH = 'tech/algotrade/algotrade-0.csv'
 ```
 
 Afterwards, we can load our CSV using the Pandas `read_csv` function.
@@ -138,9 +138,9 @@ Once we've performed our basic calculations, we will use them to calculate more 
 
 Given the openendedness of these calculations, we can perform the calculations multiple times with different parameters. We will choose our parameters by the number of trading days that we want to find trends over.
 
-Three trading days is commonly used to determine the immediate momentum of a stock, but larger periods can be used, like 21 (~one month), 126 (~six months), or 252 (~one year).
+Three trading days is commonly used to determine the immediate momentum of a stock, but larger periods can be used to discern longer-term trends, like 21 (~one month), 126 (~six months), or 252 (~one year).
 
-For our simple moving averages, larger periods tend to be more useful. The shorter the period, the more responsive the curve will be to short-term changes. Longer periods will result in a more gently curve that changes more slowly over time. This is useful for seeing the short-term trend of a stock against its long-term trend. During a period in which a short-term SMA is higher than the long-term SMA, it can be reasoned that the stock is in a period of growth - vice versa is a period of decline.
+For our simple moving averages, larger periods tend to be more useful. The shorter the period, the more responsive the curve will be to short-term changes. Longer periods will result in a more gentle curve that changes more slowly over time. This is useful for seeing the short-term trend of a stock against its long-term trend. During a period in which a short-term SMA is higher than the long-term SMA, it can be reasoned that the stock is in a period of growth - vice versa is a period of decline.
 
 ``` python
     # momentum - daily
@@ -174,4 +174,4 @@ After we've performed our calculations, we can write our data to storage.
 
 ```
 
-Now that we've stored our data, we can begin devising strategies. Before we can commit to any given strategy, we should perform backtesting - a process for determining how effective our strategy would have been in a historical context. If our strategies perform well historically, it's reasonable to expect it to respond well to events that have yet to happen. This will be the topic of the next entry of this series.
+Now that we've stored our data, we can begin devising strategies. Before we can commit to any given strategy, we should perform backtesting - a process for determining how effective our strategy would have been in a historical context. If our strategies perform well historically, it's reasonable to expect it to respond well to events that have yet to happen (though this is not a guarantee). Constructing backtests will be the topic of the next entry of this series.

@@ -6,7 +6,7 @@ config = configparser.ConfigParser()
 config.read('algotrade.cfg')
 
 EOD_API_KEY = config['eodhistoricaldata']['api_key']
-WATCHLIST_PATH = 'tech/scraping_websites_with_python/algotrade-0.csv'
+WATCHLIST_PATH = 'tech/algotrade/algotrade-0.csv'
 
 
 def download_stock_data(ticker):
