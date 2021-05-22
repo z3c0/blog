@@ -174,4 +174,4 @@ After we've performed our calculations, we can write our data to storage.
 
 ```
 
-Now that we've stored our data, we can begin devising strategies. Before we can commit to any given strategy, we should perform backtesting - a process for determining how effective our strategy would have been in a historical context. If our strategies perform well historically, it's reasonable to expect it to respond well to events that have yet to happen (though this is not a guarantee). Constructing backtests will be the topic of the next entry of this series.
+Now that we've stored our data, we can begin devising strategies. Before we can commit to any given strategy, we should perform backtesting - a process for determining how effective our strategy would have been in a historical context. If our strategies perform well historically, it's reasonable to expect it to respond well to events that have yet to happen (though this is not a guarantee). Constructing backtests can be a challenging task with repercussions if done hastily. How to design, run, and measure the performance of backtests will be the topic of the next entry of this series.
