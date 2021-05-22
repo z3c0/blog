@@ -54,7 +54,7 @@ def download_stock_data(ticker):
 The `download_stock_data` function is designed to take a single stock symbol and download its historical EOD data into a Pandas `DataFrame`. Next, we'll need to define which stocks we would like to download data for. How you procure your list is up to you - but for our purposes, it would be best stored in a CSV alongside your script.
 
 ``` txt
-Symbol,Name
+symbol,name
 AACQ,ARTIUS ACQUISITION INC
 AAN,AARONS COMPANY INC
 AAPL,APPLE INC
