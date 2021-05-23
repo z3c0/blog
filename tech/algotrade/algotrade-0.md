@@ -26,11 +26,11 @@ Choosing the right data source can be challenging and/or expensive, so shop arou
 
 - [Marketstack](https://marketstack.com)
 
-For the purposes of our exercise, we'll be utilizing the data available from [eodhistoricaldata.com](https://eodhistoricaldata.com). Feel free to use a data source more to your liking. So long as the source you choose has close price history by day, you should be able easily emulate the steps of this tutorial.
+For the purposes of our exercise, we'll be utilizing the data available from [eodhistoricaldata.com](https://eodhistoricaldata.com). Feel free to use a data source more to your liking. So long as the source you choose has close price history by day, you should be able to emulate the steps of this tutorial.
 
 ### Downloading the Data
 
-We can easily download data by utilizing the Pandas function `read_json`.
+We can download data by utilizing the Pandas function `read_json`.
 
 ``` python
 import configparser
@@ -116,7 +116,7 @@ Once we've set our index, we can pivot our dataset to make the rows more unique.
     mkt_close = pd.DataFrame(mkt_close['close'])
 ```
 
-Once our data is arranged as a matrix, we can easily perform calculations against it.
+Once our data is arranged as a matrix, we can more easily perform calculations against it.
 
 ``` python
 
@@ -138,14 +138,14 @@ Once we've performed our basic calculations, we will use them to calculate more 
 
 Given the openendedness of these calculations, we can perform the calculations multiple times with different parameters. We will choose our parameters by the number of trading days that we want to find trends over.
 
-Three trading days is commonly used to determine the immediate momentum of a stock, but larger periods can be used to discern longer-term trends, like 21 (~one month), 126 (~six months), or 252 (~one year).
+Three trading days is commonly used to determine the immediate momentum of a stock, but larger periods can be used to discern longer-term trends, like 21 (~one month), 62 (~one quarter), 126 (~six months), or 252 (~one year).
 
-For our simple moving averages, larger periods tend to be more useful. The shorter the period, the more responsive the curve will be to short-term changes. Longer periods will result in a more gentle curve that changes more slowly over time. This is useful for seeing the short-term trend of a stock against its long-term trend. During a period in which a short-term SMA is higher than the long-term SMA, it can be reasoned that the stock is in a period of growth - vice versa is a period of decline.
+For our simple moving averages, larger periods tend to be more useful than what would be used to gauge momentum. The shorter the period, the more responsive the curve will be to short-term changes. Longer periods will result in a more gentle curve that changes more slowly over time. This is useful for seeing the short-term trend of a stock against its long-term trend. During a period in which a short-term SMA is higher than the long-term SMA, it can be reasoned that the stock is in a period of growth - vice versa is a period of decline.
 
 ``` python
     # momentum - daily
     momentum = dict()
-    for period in [3, 21, 126, 252]:
+    for period in [3, 21, 62, 126, 252]:
         momentum[f'momentum_daily_{period}'] = \
             daily_direction.rolling(period).sum()
 
@@ -174,4 +174,4 @@ After we've performed our calculations, we can write our data to storage.
 
 ```
 
-Now that we've stored our data, we can begin devising strategies. Before we can commit to any given strategy, we should perform backtesting - a process for determining how effective our strategy would have been in a historical context. If our strategies perform well historically, it's reasonable to expect it to respond well to events that have yet to happen (though this is not a guarantee). Constructing backtests can be a challenging task with repercussions if done hastily. How to design, run, and measure the performance of backtests will be the topic of the next entry of this series.
+Now that we've stored our data, we can begin devising strategies. Before we can commit to any given strategy, we should perform backtesting - a process for determining how effective our strategy would have been in a historical context. If our strategies perform well historically, it's reasonable to expect them to respond well to events that have yet to happen (though this is not a guarantee). Constructing backtests can be a challenging task with repercussions if done hastily. How to design, run, and measure the performance of backtests will be the topic of the next entry of this series.
