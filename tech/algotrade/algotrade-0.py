@@ -88,7 +88,6 @@ def process_stocks():
         write_to_parquet(lagged_returns[key], key)
 
 
-
 def backtest_sma_strategy():
     close_price = pd.read_parquet('data/market_close.parquet.gzip')
     daily_returns = pd.read_parquet('data/returns_daily.parquet.gzip')
