@@ -147,13 +147,13 @@ For our simple moving averages, larger periods tend to be more useful than what 
     momentum = dict()
     for period in [3, 21, 62, 126, 252]:
         momentum[f'momentum_daily_{period}'] = \
-            daily_direction.rolling(period).sum()
+            np.sign(daily_returns.rolling(period).mean())
 
     # simple moving average - daily
     simple_moving_average = dict()
     for period in [21, 42, 126, 252]:
         simple_moving_average[f'sma_daily_{period}'] = \
-            daily_returns.rolling(period).mean()
+            mkt_close.rolling(period).mean()
 ```
 
 After we've performed our calculations, we can write our data to storage.
