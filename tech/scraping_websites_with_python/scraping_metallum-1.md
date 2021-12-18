@@ -195,7 +195,7 @@ As expected, we're seeing raw JSON return from the endpoint. We're now ready to 
 
 ### **Step 2b**: Parsing JSON
 
-Parsing JSON data with Python is an extremely task, and is typically done via the [`json`](https://docs.python.org/3/library/json.html) module. This is a standard Python library, so it does not need to be installed with `pip`. Let's go ahead and `import` it.
+Parsing JSON data with Python is an extremely simple task, and is typically done via the [`json`](https://docs.python.org/3/library/json.html) module. This is a standard Python library, so it does not need to be installed with `pip`. Let's go ahead and `import` it.
 
 ```python
 import json
@@ -370,7 +370,7 @@ Afterwards, you can easily write the data to a CSV with the [`to_csv()`](https:/
 
 ```
 
-With this, we're almost finished. Before downloading the entire dataset, we'll want to make sure we're accounting for an errored run by truncating our target file before writing data to it. This way, a repeated run won't duplicate any data that may already exist in the file.
+With this, we're almost finished. Before downloading the entire dataset, we'll want to make sure we're accounting for an erred run by truncating our target file before writing data to it. This way, a repeated run won't duplicate any data that may already exist in the file.
 
 This can be done succinctly by opening and closing the file with the `'w'` write mode.
 
